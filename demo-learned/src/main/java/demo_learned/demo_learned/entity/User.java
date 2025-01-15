@@ -6,6 +6,7 @@ import lombok.experimental.FieldDefaults;
 
 
 import java.time.LocalDate;
+import java.util.Set;
 
 
 @Setter
@@ -31,5 +32,6 @@ public class User {
     String lastName;
 
     LocalDate dob;
-
+    @ElementCollection
+    Set<String> roles;
 }

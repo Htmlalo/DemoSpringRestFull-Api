@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/auth/")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationUser {
-    private final UserService userService;
 
+    private final UserService userService;
+    
+    
     @PostMapping("login")
     public ResponseEntity<ApiResponse<ApiAuthentication>> login(@RequestBody UserLoginRequest request) {
         return userService.login(request);

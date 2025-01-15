@@ -24,7 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     JwtUtil jwtUtil;
-    private final String[] PUBLIC_ENDPOINTS = {"/api/auth/login", "/api/auth/resign" , "/api/auth/logout","/api/auth/refreshToken"};
+    private final String[] PUBLIC_ENDPOINTS = {"/api/auth/login", "/api/auth/resign", "/api/auth/logout", "/api/auth/refreshToken"};
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -33,12 +33,10 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(autorzite -> autorzite.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll().anyRequest().authenticated());
+        http.authorizeHttpRequests(autorzite -> autorzite.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll().anyRequest().hasAuthority("USER"));
         http.addFilterBefore(new JwtAuthenticationFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
         http.csrf(AbstractHttpConfigurer::disable);
-
         return http.build();
-
     }
 
 }

@@ -16,29 +16,35 @@ public class JwtUtil {
 
     private final String secretKey = "5uaT7bQ84LIiWH5XZkDQTDEiS02ZM23pVvFvvy8XhKDuPuBxviGOGfqezOIFHJyG";
 
-    private final long EXPIRATION_TIME = TimeUnit.SECONDS.toMillis(30);
+    private final long EXPIRATION_TIME = TimeUnit.MINUTES.toMillis(30);
 
     private final long REFRESH_TOKEN_EXPIRATION_TIME = TimeUnit.HOURS.toMillis(1);
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
         return JWT.create()
                 .withSubject(username)
+                .withClaim("role", role)
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .withIssuer("Vanthuat")
                 .withIssuedAt(new Date())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(String username, String role) {
         return JWT.create()
                 .withSubject(username)
+                .withClaim("role", role)
                 .withExpiresAt(new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRATION_TIME))
                 .withIssuer("Vanthuat")
                 .withIssuedAt(new Date())
                 .sign(Algorithm.HMAC256(secretKey));
     }
 
-
+    public String extractRole(String token) {
+        DecodedJWT decodedJWT = decodeTokenWithoutVerification(token);
+        if (decodedJWT != null) return decodedJWT.getClaim("role").asString();
+        return null;
+    }
 
     public String extractUsername(String token) {
         DecodedJWT decodedJWT = decodeTokenWithoutVerification(token);

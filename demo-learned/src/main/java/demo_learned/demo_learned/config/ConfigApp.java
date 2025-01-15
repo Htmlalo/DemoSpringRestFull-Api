@@ -1,6 +1,5 @@
 package demo_learned.demo_learned.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.modelmapper.ModelMapper;
 
 import org.modelmapper.convention.MatchingStrategies;
